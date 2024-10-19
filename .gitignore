@@ -1,0 +1,4 @@
+*.db
+.vscode
+.venv
+__pychache__
