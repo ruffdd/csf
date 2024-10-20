@@ -1,4 +1,4 @@
 *.db
 .vscode
 .venv
-__pychache__
+__pycache__

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <title>{% block title %}{% endblock %} - CSF </title>
+    {% endblock %}
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</head>
+<body>
+    <div id="header">
+        <div id="logo"><h1>CSF</h1></div>
+    <nav>{% block nav%}{%endblock%}</nav>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="footer">
+        {% block footer %}
+        {% endblock %}
+    </div>
+</body>

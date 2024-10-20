@@ -9,7 +9,7 @@ def create_new_db():
     con:sql.Connection= sql.connect(DB_PATH)
     cur:sql.Cursor = con.cursor()
     cur.execute("CREATE Table IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT NOT NULL);")
-    cur.execute("CREATE Table IF NOT EXISTS calendar_sources (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT, name TEXT, userid INTEGER);")
+    cur.execute("CREATE Table IF NOT EXISTS calendar_sources (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, path TEXT UNIQUE, name TEXT UNIQUE);")
     cur.execute("CREATE Table IF NOT EXISTS pipes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT, source_id INTEGER, sink_id INTEGER);")
     try:
         user.create_user('test','123456')
@@ -66,13 +66,16 @@ class user:
             con.commit()
             con.close()
     
-    def add_calendar_source(self):
-        pass
+    def add_calendar_source(self,path,name):
+        cur:sql.Cursor = self.con.cursor()
+        cur.execute("INSERT INTO calendar_sources (user_id,path,name) VALUES(?,?,?)",(self.ID,path,name))
+        self.con.commit()
+        
 
         
     def get_list_of_sources(self):
         cur:sql.Cursor = self.con.cursor()
-        cur.execute("SELECT id,path,name FROM calendar_sources WHERE userid=?",(self.ID,))
+        cur.execute("SELECT id,name,path FROM calendar_sources WHERE user_id=?",(self.ID,))
         return cur.fetchall()
     
     def get_list_of_pipes(self):
@@ -81,6 +84,19 @@ class user:
         
     def __del__(self):
         self.con.close()
+
+# checks in table if a value with equal values exists.
+def exists(conection:sql.Connection,table,values):
+    params=(table,)
+    command="SELECT * FROM ? WHERE"
+    for k,v in values:
+        command+=' ?=?'
+        params+=(k,v)
+    command+=';'
+    cur=conection.cursor()
+    cur.execute(command)
+    return cur.fetchone() is not None
+    
 
 def get_calendar(address):
     response = requests.get(address)

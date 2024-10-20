@@ -1,8 +1,28 @@
 {% extends "user.html" %}
-{% block title %}{{username}}{% endblock %}
 {% block head %}
     {{ super() }}
 {% endblock %}
 {% block content %}
-   {{calendar_sources}}
+    <div id="calendar-list">
+        {% for cal in calendar_sources %}
+            <div class="calendar" data-cal-id="{{cal[0]}}">
+                <picture>
+                    <img src="{{ url_for('static', filename='missing.ico') }}">
+                </picture><br>
+                <div class="name">{{cal[1]}}</div>
+            </div><br>
+        {% endfor %}
+
+    </div>
+    <div id="pipes-list">
+
+    </div>
+    <form action="{{create_calendar_path}}" method="post">
+        <label>add source</label>
+        <label for="name">name</label>
+        <input type="text" name="name">
+        <label for="path">path</label>
+        <input type="text" name="path">
+        <button type="submit">add</button>
+    </form>
 {% endblock %}

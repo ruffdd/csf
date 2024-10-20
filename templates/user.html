@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% block head %}
-    <title>{% block title %}{% endblock %} - CSF </title>
-    {% endblock %}
+{% extends "main.html" %}
+{% block title %}{{username}}{% endblock %}
 </head>
 <body>
-    <nav><h1>CSF</h1><p>{{username}}</nav>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div id="footer">
-        {% block footer %}
-        {% endblock %}
-    </div>
+    {% block nav%}
+    <div>{{username}}</div>
+    {% endblock%}
 </body>
 </html>
