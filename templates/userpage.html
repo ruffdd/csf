@@ -4,14 +4,6 @@
 {% endblock %}
 {% block content %}
     <div id="calendar-list">
-        {% for cal in calendar_sources %}
-            <div class="calendar" data-cal-id="{{cal[0]}}">
-                <picture>
-                    <img src="{{ url_for('static', filename='missing.ico') }}">
-                </picture><br>
-                <div class="name">{{cal[1]}}</div>
-            </div><br>
-        {% endfor %}
 
     </div>
     <div id="pipes-list">

@@ -9,7 +9,7 @@ def create_new_db():
     con:sql.Connection= sql.connect(DB_PATH)
     cur:sql.Cursor = con.cursor()
     cur.execute("CREATE Table IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT NOT NULL);")
-    cur.execute("CREATE Table IF NOT EXISTS calendar_sources (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, path TEXT UNIQUE, name TEXT UNIQUE);")
+    cur.execute("CREATE Table IF NOT EXISTS calendar_sources (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, path TEXT, name TEXT UNIQUE);")
     cur.execute("CREATE Table IF NOT EXISTS pipes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT, source_id INTEGER, sink_id INTEGER);")
     try:
         user.create_user('test','123456')
@@ -66,17 +66,23 @@ class user:
             con.commit()
             con.close()
     
-    def add_calendar_source(self,path,name):
+    def source_add(self,path,name):
         cur:sql.Cursor = self.con.cursor()
         cur.execute("INSERT INTO calendar_sources (user_id,path,name) VALUES(?,?,?)",(self.ID,path,name))
         self.con.commit()
         
-
-        
-    def get_list_of_sources(self):
+    def source_get_all(self):
         cur:sql.Cursor = self.con.cursor()
+        cur.row_factory= dict_factory
         cur.execute("SELECT id,name,path FROM calendar_sources WHERE user_id=?",(self.ID,))
         return cur.fetchall()
+    
+    def source_get(self,name):
+        cur:sql.Cursor = self.con.cursor()
+        cur.row_factory= dict_factory
+        cur.execute("SELECT id,name,path FROM calendar_sources WHERE user_id=? AND name=?",(self.ID,name))
+        return cur.fetchone()
+        
     
     def get_list_of_pipes(self):
         cur:sql.Cursor = con.cursor()
@@ -105,5 +111,9 @@ def get_calendar(address):
     ics = response.content
     return icalendar.Calendar.from_ical(ics)
 
+def dict_factory(cursor, row):
+    fields = [column[0] for column in cursor.description]
+    return {key: value for key, value in zip(fields, row)}
 
 create_new_db()
+
