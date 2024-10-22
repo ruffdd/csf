@@ -9,12 +9,12 @@
     <div id="pipes-list">
 
     </div>
-    <form action="{{create_calendar_path}}" method="post">
+    <form action="{{create_calendar_path}}" method="post" name="add-source">
         <label>add source</label>
         <label for="name">name</label>
         <input type="text" name="name">
         <label for="path">path</label>
         <input type="text" name="path">
-        <button type="submit">add</button>
+        <button>add</button>
     </form>
 {% endblock %}

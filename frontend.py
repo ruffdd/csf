@@ -36,8 +36,8 @@ def get_sources():
 @app.route('/cmd/source/add',methods=['POST'])
 def add_source():
     user = backend.user(1)
-    name=request.args['name']
-    path=request.args['path']
+    name=request.form['name']
+    path=request.form['path']
     if user.source_get(name) is not None:
         return Response('a source with the name '+name+' already exists',status=400)
     try:
