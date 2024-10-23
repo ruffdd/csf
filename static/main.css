@@ -48,3 +48,11 @@
     font-size: 2em;
     margin-top: 1em;
 }
+
+.busy *{
+    cursor: progress;
+}
+
+.error-msg{
+    background-color: #ee000088;
+}

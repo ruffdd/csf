@@ -35,15 +35,30 @@ function submit_form(event) {
     if (event.target == null)
         throw new Error();
     let form = event.target;
+    form.classList.add("busy");
+    for (let child of form.children) {
+        child.setAttribute("disabled", "true");
+    }
     let path = new URL(form.action);
     let met = form.method;
     let data = new FormData(form);
-    fetch(path, { method: met, body: JSON.stringify({ FormData: data }) }).then(function (response) {
-        if (response.ok)
-            return response.text();
-        else
-            throw new Error("Error while reaching " + path.toString());
-    }).then(text => {
+    fetch(path, { method: met, body: data }).then(function (response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = form.querySelector('output[name="result"]');
+            if (result == null) {
+                result = document.createElement("output");
+                result.name = "result";
+                form.appendChild(result);
+            }
+            result.textContent = yield response.text();
+            if ((!response.ok) != result.classList.contains('error-msg')) {
+                result.classList.toggle('error-msg');
+            }
+            form.classList.remove("busy");
+            for (let child of form.children) {
+                child.removeAttribute("disabled");
+            }
+        });
     });
 }
 function get_json(path) {
