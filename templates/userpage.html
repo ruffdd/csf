@@ -1,20 +1,39 @@
 {% extends "user.html" %}
 {% block head %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="calendar-list">
+<div id="calendar-list">
 
-    </div>
-    <div id="pipes-list">
+</div>
+<div id="sources" class="hpane">
+
+    <div id="sources-list">
 
     </div>
     <form action="{{create_calendar_path}}" method="post" name="add-source">
         <label>add source</label>
         <label for="name">name</label>
-        <input type="text" name="name">
+        <input type="text" name="nam">
         <label for="path">path</label>
         <input type="text" name="path">
         <button>add</button>
     </form>
+</div>
+<div id="pipes" class="hpane">
+    <form action="{{create_pipe_path}}" method="post" name="add-pipe">
+        <label>add pipe</label>
+
+        <label for="name">name</label>
+        <input type="text" name="nam">
+
+        <label for="source_id">source id</label>
+        <input type="number" name="source_id">
+
+        <label for="sink_id">sink id</label>
+        <input type="number" name="sink_id">
+
+        <button>add</button>
+    </form>
+</div>
 {% endblock %}
