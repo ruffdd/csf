@@ -40,7 +40,7 @@ def get_sources():
 @app.route('/cmd/source/add',methods=['POST'])
 def add_source():
     user = backend.User(1)
-    name=request.form['name']
+    name=request.form['nam']
     path=request.form['path']
     if user.source_get(name) is not None:
         return Response('a source with the name '+name+' already exists',status=400)
@@ -60,6 +60,11 @@ def add_pipe():
         return *e.args,400
     
     return "",201
+
+@app.route('/cmd/pipe',methods=['GET'])
+def get_pipes():
+    user = backend.User(1)
+    return jsonify(user.pipes_get_all_by_source(1))
 
 @app.route('/cmd/sink/add',methods=['POST'])
 def add_sink():

@@ -3,24 +3,6 @@ function builder(event: Event) {
     document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", submit_form, false);
     });
-
-    let calendar_list = document.getElementById('calendar-list');
-    if (calendar_list != undefined) {
-        get_json(new URL('cmd/source')).then(function (json) {
-            json.forEach((element: any) => {
-                let cal_tile = document.createElement('div');
-                cal_tile.classList.add('calendar');
-                let icon = document.createElement('img');
-                icon.src = '/static/missing.ico';
-                cal_tile.appendChild(icon);
-                cal_tile.appendChild(document.createElement('br'));
-                cal_tile.appendChild(document.createElement('div'));
-                (cal_tile.lastChild as HTMLDivElement).classList.add('name');
-                (cal_tile.lastChild as HTMLDivElement).innerText = element['name'];
-                calendar_list.appendChild(cal_tile);
-            });
-        });
-    }
 }
 
 function submit_form(event: Event) {

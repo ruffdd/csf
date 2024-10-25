@@ -1,0 +1,31 @@
+
+
+#calendar-list{
+    overflow-y: scroll;
+}
+
+.calendar{
+    background-color: teal;
+    width:20em;
+    height: auto;
+    padding: 2em;
+    border-radius: 3%;
+    margin-bottom: 2em;
+}
+
+.calendar>img{
+    resize: both;
+    border-radius: 5%;
+    width: 100%;
+    height: 100%;
+}
+
+.calendar>*{
+    align-content: center;
+}
+
+.calendar>.name{
+    text-align: center;
+    font-size: 2em;
+    margin-top: 1em;
+}

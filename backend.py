@@ -92,12 +92,11 @@ class User:
         cur.execute("INSERT INTO pipes (user_id,name,source_id,sink_id) VALUES(?,?,?,?)",(self.ID,name,source_id,sink_id))
         self.con.commit()        
     
-    
     def pipes_get_all_by_source(self,source_id:int):
-        cur:sql.Cursor = con.cursor()
+        cur:sql.Cursor = self.con.cursor()
         cur.row_factory=dict_factory
-        cur.execute("SELECT id,name,sink_id,filter WHERE user_id=? AND source_id=?",(self.ID,source_id))
-        return cur.execute()
+        cur.execute("SELECT id,name,sink_id,filter FROM pipes WHERE user_id=? AND source_id=?",(self.ID,source_id))
+        return cur.fetchall()
         
     def sink_add(self,name:str):
         cur:sql.Cursor = self.con.cursor()

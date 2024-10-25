@@ -4,7 +4,9 @@
     height: 5em;
     display: flex;
     align-items: center;
-    justify-content: space-between
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    margin-bottom: 1em;
 }
 
 #header > *{
@@ -17,42 +19,21 @@
 #header>nav{
 }
 
-#calendar-list{
-    overflow-y: scroll;
-}
-
-.calendar{
-    background-color: teal;
-    width:20em;
-    height: auto;
-    padding: 2em;
-    border-radius: 3%;
-}
-
-.calendar>picture{
-    resize: both;
-}
-
-.calendar>picture>*{
-    border-radius: 5%;
-    width: 100%;
-    height: 100%;
-}
-
-.calendar>*{
-    align-content: center;
-}
-
-.calendar>.name{
-    text-align: center;
-    font-size: 2em;
-    margin-top: 1em;
-}
-
 .busy *{
     cursor: progress;
 }
 
 .error-msg{
     background-color: #ee000088;
+}
+
+.hpane{
+    display: flex;
+    flex-direction: row;
+}
+
+.hpane>:not(:last-child){
+    border-right: 1px solid black;
+    margin-right: 1em;
+    padding-right: 1em;
 }
