@@ -17,8 +17,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     <br>
                     <h4 class="name" title="${element['path']}">${element['name']}</h4>
                     <menu>
-                    <li onclick="preview_calendar('${element['path']}');">preview</li>
+                        <button onclick="preview_calendar('/cmd/source/${element['name']}/preview');">preview</button>
                     </menu>
+                </div>
             `;
         });
     });
@@ -42,19 +43,22 @@ function add_popup(content:HTMLElement){
     let close_button=document.createElement("button");
     close_button.innerText="X";
     close_button.addEventListener("click",(event)=>{
-        document.removeChild((event.target as HTMLElement)!.parentElement!);
+        let target=(event.target as HTMLElement)!;
+        target.parentElement?.parentElement?.removeChild(target.parentElement!);
     })
+    popup.appendChild(close_button);
     popup.appendChild(content);
+    document.getElementsByTagName('body')[0].appendChild(popup);
 }
 
 
 function preview_calendar(path:URL){
-    fetch(path).then((response)=>{
+    fetch(path).then(function(response){
         if(response.ok)
             return response.text()
         else
             "could not get calendar"
-    }).then((content)=>{
+    }).then(function(content){
         let element=document.createElement("p");
         element.innerText=content||"";
         add_popup(element);

@@ -37,6 +37,12 @@ def get_sources():
     user = backend.User(1)
     return jsonify(user.source_get_all())
 
+
+@app.route('/cmd/source/<string:name>/preview',methods=['GET'])
+def get_source_content(name:str):
+    user = backend.User(1)
+    return user.source_get_content(name)
+
 @app.route('/cmd/source/add',methods=['POST'])
 def add_source():
     user = backend.User(1)

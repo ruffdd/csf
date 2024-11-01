@@ -1,15 +1,20 @@
 import requests
-import icalendar
 import sqlite3 as sql
 import os
+import multiprocessing
+import time
+from ics import Calendar,Event
+from requests import request
+from time import sleep
+
 
 DB_PATH='main.db'
 
 def create_new_db():
     con:sql.Connection= sql.connect(DB_PATH)
     cur:sql.Cursor = con.cursor()
-    cur.execute("CREATE Table IF NOT EXISTS users   (                 id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE NOT NULL, password TEXT NOT NULL);")
-    cur.execute("CREATE Table IF NOT EXISTS sources (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT UNIQUE NOT NULL, path TEXT );")
+    cur.execute("CREATE Table IF NOT EXISTS users   (                                           id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE NOT NULL, password TEXT NOT NULL);")
+    cur.execute("CREATE Table IF NOT EXISTS sources (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT UNIQUE NOT NULL, path TEXT, last_content TEXT);")
     cur.execute("CREATE Table IF NOT EXISTS pipes   (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT UNIQUE NOT NULL, source_id INTEGER, sink_id INTEGER,filter TEXT);")
     cur.execute("CREATE Table IF NOT EXISTS sinks   (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT UNIQUE NOT NULL);")
     try:
@@ -86,6 +91,15 @@ class User:
         cur.row_factory= dict_factory
         cur.execute("SELECT id,name,path FROM sources WHERE user_id=? AND name=?",(self.ID,name))
         return cur.fetchone()
+    
+    def source_get_content(self,name):
+        cur:sql.Cursor = self.con.cursor()
+        cur.row_factory= single_factory
+        cur.execute("SELECT path FROM sources WHERE user_id=? AND name=?",(self.ID,name))
+        path=cur.fetchone()
+        cur.execute("SELECT last_content FROM sources WHERE user_id=? AND name=?",(self.ID,name))
+        last=cur.fetchone()
+        return request('GET',path).content.decode('utf8')
         
     def pipes_add(self,source_id:int,sink_id:int,name:str):
         cur:sql.Cursor = self.con.cursor()
@@ -131,5 +145,37 @@ def dict_factory(cursor, row):
     fields = [column[0] for column in cursor.description]
     return {key: value for key, value in zip(fields, row)}
 
-create_new_db()
+def single_factory(cursor:sql.Cursor,row:sql.Row):
+    assert(len(cursor.description)==1)
+    return row[0]
 
+
+class Worker(multiprocessing.Process):
+    connection:sql.Connection=None
+    
+    def __init__(self,db_path):
+        super().__init__()
+        self.DB_PATH=db_path
+        
+    def run(self):
+        self.connection:sql.Connection = sql.connect(self.DB_PATH)
+        while(True):
+            for user_id in self.user_id_getAll():
+                user = User(user_id)
+                for source in user.source_get_all():
+                    ics=user.source_get_content(source['name'])
+                    for calendar in Calendar.parse_multiple(ics):
+                        for event in calendar.events:
+                            print("event:"+event.name)
+
+            sleep(20)
+            
+        
+    def user_id_getAll(self):
+        cursor:sql.Cursor=self.connection.cursor()
+        cursor.execute("SELECT id FROM users")
+        cursor.row_factory=single_factory
+        return cursor.fetchall()
+
+create_new_db()
+#Worker(DB_PATH).start()

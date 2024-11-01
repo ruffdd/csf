@@ -10,7 +10,10 @@
 <body>
     <div id="header">
         <div id="logo"><h1>CSF</h1></div>
-    <nav>{% block nav%}{%endblock%}</nav>
+        <nav>
+            {% block nav%}
+            {%endblock%}
+        </nav>
     </div>
     <div id="content">
         {% block content %}
@@ -21,3 +24,4 @@
         {% endblock %}
     </div>
 </body>
+</html>
