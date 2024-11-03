@@ -1,7 +1,6 @@
 import uuid
 import os
-
-CACHE_PATH=os.path.abspath('.config')
+from config import CACHE_PATH
 
 try:
     os.mkdir(CACHE_PATH,)

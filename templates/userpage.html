@@ -23,20 +23,22 @@
         <div id="pipes-list">
 
         </div>
-        <form action="{{create_pipe_path}}" method="post" name="add-pipe">
-            <label>add pipe</label>
+        <form action="{{create_pipe_path}}" method="post" name="add-pipe" id="add-pipe-form">
+            <h4>add pipe</h4>
 
             <label for="name">name</label>
             <input type="text" name="nam">
 
-            <label for="source_id">source id</label>
-            <input type="number" name="source_id">
+            <input type="hidden" name="source_id">
 
-            <label for="sink_id">sink id</label>
-            <input type="number" name="sink_id">
 
             <button>add</button>
         </form>
+    </section>
+    <section>
+        <div id="sink-list">
+
+        </div>
     </section>
 </div>
 {% endblock %}

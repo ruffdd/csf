@@ -61,7 +61,7 @@ def add_source():
 def add_pipe():
     user = backend.User(1)
     try:
-        user.pipes_add(*get_form_data(request,['source_id','sink_id','nam']))
+        user.pipes_add(*get_form_data(request,['source_id','nam']))
     except KeyError as e:
         return *e.args,400
     
@@ -70,13 +70,19 @@ def add_pipe():
 @app.route('/cmd/pipe',methods=['GET'])
 def get_pipes():
     user = backend.User(1)
-    return jsonify(user.pipes_get_all_by_source(1))
+    return jsonify(user.pipes_get_all_by_source(request.args['source_id']))
+
+@app.route('/cmd/sink')
+def sink():
+    user=backend.User(1)
+    
+    return user.sink_get_of_pipe(request.args['name'])
 
 @app.route('/cmd/sink/add',methods=['POST'])
 def add_sink():
     user = backend.User(1)
     
-    user.sink_add(request.form['name'])
+    user.sink_add(request.form['nam'],request.form['pipe_id'])
     
     return "",201
 
@@ -88,3 +94,7 @@ def get_form_data(request,names)->list:
         except BadRequestKeyError as e:
             raise KeyError('key "'+name+'" was not found in form data')
     return output
+
+def arg_or_fail(request:Flask.request_class,name:str):
+    pass
+    

@@ -6,7 +6,7 @@
 
 .calendar{
     background-color: teal;
-    width:20em;
+    width:10em;
     height: auto;
     padding: 2em;
     border-radius: 3%;
@@ -27,5 +27,4 @@
 .calendar>.name{
     text-align: center;
     font-size: 2em;
-    margin-top: 1em;
 }

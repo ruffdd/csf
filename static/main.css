@@ -45,3 +45,13 @@
     position: absolute;
     padding: 1em;
 }
+
+form{
+    border: 1px solid black;
+    border-radius: 0.5em;
+    padding: 1em;
+}
+form h4{
+    text-align: center;
+    margin: 0px;
+}
