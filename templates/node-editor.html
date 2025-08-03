@@ -1,0 +1,16 @@
+{% extends "user.html" %}
+{% block head %}
+{{ super() }}
+<script type="module" src="{{ url_for('static', filename='node-editor.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='node-editor.css') }}">
+{% endblock %}
+{% block content %}
+<div id="node-editor">
+
+    <ul id="nodes-toolbar">
+    </ul>
+    <div id="nodes-canvas">
+        .
+    </div>
+</div>
+{% endblock %}

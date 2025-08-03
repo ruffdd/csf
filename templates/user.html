@@ -1,5 +1,7 @@
 {% extends "main.html" %}
-{% block title %}{{username}}{% endblock %}
+user: {% block title %}{{username}}{% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+<script type="module" src="{{ url_for('static', filename='user.js') }}"></script>
 </head>
 <body>
     {% block nav%}

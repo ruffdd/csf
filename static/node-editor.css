@@ -1,0 +1,16 @@
+#node-editor {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+#nodes-toolbar {
+    background-color: beige;
+    margin-top: 0;
+}
+
+#nodes-canvas {
+    background-color: aquamarine;
+    flex: 1;
+}
