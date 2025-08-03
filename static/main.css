@@ -1,4 +1,12 @@
 
+body,html{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
 
 #header{
     height: 5em;
@@ -7,6 +15,7 @@
     justify-content: space-between;
     border-bottom: 1px solid black;
     margin-bottom: 1em;
+    flex: 0 0 auto;
 }
 
 #header > *{
@@ -17,6 +26,10 @@
 }
 
 #header>nav{
+}
+
+#content{
+    flex: 1 1 auto;
 }
 
 .busy *{

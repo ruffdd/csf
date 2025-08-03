@@ -22,69 +22,15 @@ def startpage():
 def user_page():
     user =backend.User(1)
     return render_template(
-        'userpage.html',
+        'node-editor.html',
         username=user.NAME,
-        create_calendar_path=url_for('add_source',_method='POST'),
-        create_pipe_path=url_for('add_pipe',_method='POST'))
+        create_calendar_path="",
+        create_pipe_path="")
     
-
-@app.route("/editpipe/<pipeid>")
-def edit_pipe(pipeid):
-    return render_template('pipeedit.html',pipeid=pipeid)
-
-@app.route('/cmd/source',methods=['GET'])
-def get_sources():
+@app.route("/user_config.json")
+def user_nodes():
     user = backend.User(1)
-    return jsonify(user.source_get_all())
-
-
-@app.route('/cmd/source/<string:name>/preview',methods=['GET'])
-def get_source_content(name:str):
-    user = backend.User(1)
-    return user.source_get_content(name)
-
-@app.route('/cmd/source/add',methods=['POST'])
-def add_source():
-    user = backend.User(1)
-    name=request.form['nam']
-    path=request.form['path']
-    if user.source_get(name) is not None:
-        return Response('a source with the name '+name+' already exists',status=400)
-    try:
-        user.source_add(path,name)
-        return Response(status=201)
-    except Exception as e:
-        app.logger.error(str(e))
-        return Response("Unknown Error",status=500)
-    
-@app.route('/cmd/pipe/add',methods=['POST'])
-def add_pipe():
-    user = backend.User(1)
-    try:
-        user.pipes_add(*get_form_data(request,['source_id','nam']))
-    except KeyError as e:
-        return *e.args,400
-    
-    return "",201
-
-@app.route('/cmd/pipe',methods=['GET'])
-def get_pipes():
-    user = backend.User(1)
-    return jsonify(user.pipes_get_all_by_source(request.args['source_id']))
-
-@app.route('/cmd/sink')
-def sink():
-    user=backend.User(1)
-    
-    return user.sink_get_of_pipe(request.args['name'])
-
-@app.route('/cmd/sink/add',methods=['POST'])
-def add_sink():
-    user = backend.User(1)
-    
-    user.sink_add(request.form['nam'],request.form['pipe_id'])
-    
-    return "",201
+    return user.get_nodes()
 
 def get_form_data(request,names)->list:
     output=list()
