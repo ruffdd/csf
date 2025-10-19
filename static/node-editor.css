@@ -29,6 +29,9 @@
     background-color: var(--node-editor-bg);
     display: inline-block;
     position: absolute;
+	&.floating{
+		opacity: 0.8;
+	}
 }
 
 .node-title{
