@@ -20,15 +20,3 @@ function setup(event: Event) {
     console.log("Node editor setup complete");
 }
 document.addEventListener("DOMContentLoaded", setup);
-
-function add_node_to_canvas(node: {() : void}) {
-    
-}
-
-function node_canvas_click(event: MouseEvent) {
-/*    if (nodeToAdd) {
-        nodeToAdd();
-        nodeToAdd = null;
-    }*/
-}
-document.getElementById('nodes-canvas')!.addEventListener('click', node_canvas_click);
