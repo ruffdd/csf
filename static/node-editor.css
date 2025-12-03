@@ -19,6 +19,7 @@
 #nodes-canvas {
     background-color: aquamarine;
     flex: 1;
+	position: relative;
 }
 
 .node {
@@ -29,9 +30,13 @@
     background-color: var(--node-editor-bg);
     display: inline-block;
     position: absolute;
+	top:0px;
+	left:0px;
 	&.floating{
-		opacity: 0.8;
+		box-shadow: 10px 10px 5px grey;
 	}
+
+
 }
 
 .node-title{
@@ -41,7 +46,6 @@
 	background-color: var(--node-editor-title-bg);
 	color: var(--node-editor-title-color);
 	overflow:hidden;
-
 }
 
 .node-title>*{
@@ -55,3 +59,4 @@
 .node.menu_item{
     cursor: grab;
 }
+
