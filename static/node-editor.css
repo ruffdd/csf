@@ -35,8 +35,6 @@
 	&.floating{
 		box-shadow: 10px 10px 5px grey;
 	}
-
-
 }
 
 .node-title{
@@ -46,6 +44,7 @@
 	background-color: var(--node-editor-title-bg);
 	color: var(--node-editor-title-color);
 	overflow:hidden;
+    user-select: none;
 }
 
 .node-title>*{
