@@ -24,7 +24,6 @@ namespace FilterNodes {
       currentElement.addEventListener('click', e => new FilterNodes.SubscribeNode(nodeCanvas));
       nodeMenu.appendChild(currentElement);
     }
-    console.log("Node editor setup complete");
   }
   document.addEventListener("DOMContentLoaded", setup);
 }

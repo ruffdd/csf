@@ -69,7 +69,6 @@ namespace FilterNodes {
 				this.setState('floating')
 				this.startMouse= [e.x,e.y];
 				this.startPosition=this.getPositon();
-				// console.log("relative:"+this.realtiveClick);
 			}
 		}
 
@@ -78,10 +77,8 @@ namespace FilterNodes {
 				let move= sub([e.x,e.y],this.startMouse);
 				let next = add(this.startPosition,move);
 				node.setPosition(next);
-				console.log("next:"+next);
 			} else {
 			}
-			// console.log([e.clientX, e.clientY]);
 		}
 
 		private endDrag(e: Event, node: Node) {
