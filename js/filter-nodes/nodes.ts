@@ -6,4 +6,12 @@ namespace FilterNodes {
             super(parent, "Example Node", startState);
         }
     }
+
+    export class SubscribeNode extends Node{
+        constructor(parent: HTMLElement, startState: string = State.SET) {
+            super(parent, "Subscribed Calendar", startState);
+
+            this.addValue(new NodeValueIcalAdress(this));
+        }
+    }
 }

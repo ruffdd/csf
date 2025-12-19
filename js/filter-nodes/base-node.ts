@@ -8,12 +8,13 @@ namespace FilterNodes {
 
 
 	export class Node {
-		htmlElement: HTMLDivElement;
-		titleElement: HTMLDivElement;
-		contentDiv: HTMLDivElement;
-		state = State.FLOATING;
-		startMouse: [number, number];
-		startPosition:[number,number];
+		protected htmlElement: HTMLDivElement;
+		protected titleElement: HTMLDivElement;
+		protected contentDiv: HTMLDivElement;
+		protected state = State.FLOATING;
+		protected startMouse: [number, number];
+		protected startPosition:[number,number];
+		protected values: NodeValue[]=[];
 
 		constructor(parent: HTMLElement, name: string, startState: string) {
 			if (this.constructor === Node) {
@@ -41,6 +42,11 @@ namespace FilterNodes {
 			this.startPosition=this.getPositon();
 		}
 
+		protected addValue(value:NodeValue){
+			this.values.push();
+			this.contentDiv.append(value.uiElement);
+		}
+
 		public setState(state: string) {
 			this.state = state;
 			this.htmlElement.classList.remove('menu-item', 'floating', 'set');
@@ -56,7 +62,6 @@ namespace FilterNodes {
 					break;
 			}
 		}
-
 
 
 		private dragStart(this: Node, e: MouseEvent) {

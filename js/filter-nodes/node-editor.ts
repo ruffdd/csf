@@ -17,6 +17,13 @@ namespace FilterNodes {
       currentElement.addEventListener('click', (e) => { new FilterNodes.ExampleNode(nodeCanvas); });
       nodeMenu.appendChild(currentElement);
     }
+    {
+      let currentElement: HTMLElement;
+      currentElement = document.createElement('li');
+      currentElement.innerText = "Subscribe";
+      currentElement.addEventListener('click', e => new FilterNodes.SubscribeNode(nodeCanvas));
+      nodeMenu.appendChild(currentElement);
+    }
     console.log("Node editor setup complete");
   }
   document.addEventListener("DOMContentLoaded", setup);
