@@ -10,6 +10,10 @@ namespace FilterNodes{
         public getValueString():string{
             return this.uiElement.value;
         }
+
+        public set(value:string){
+            this.uiElement.value=value;
+        }
     }
 
     export class NodeValueIcalAdress extends NodeValue{
@@ -21,7 +25,7 @@ namespace FilterNodes{
         }
 
         public getValue():URL{
-            return new URL(this.uiElement.value);
+            return new URL(this.getValueString());
         }
 
     }
