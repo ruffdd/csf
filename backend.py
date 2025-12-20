@@ -54,6 +54,9 @@ class User:
     def store_filter(self,data:str,filter_name:str='default')->None:
         open(self.store_path/(filter_name+'.json'),'w').write(data)
 
+    def load_filter(self,filter_name:str='default'):
+        return json.loads(open(self.store_path/(filter_name+'.json'),'r').read())
+
     def get_nodes(self)->str:
         return ""
     
