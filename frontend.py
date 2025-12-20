@@ -1,6 +1,7 @@
 from flask import Flask,request,render_template,Response,url_for,logging,jsonify,send_from_directory
 from werkzeug.exceptions import BadRequestKeyError
 import backend
+import json
 
 app = Flask(__name__)
 
@@ -16,9 +17,13 @@ def missing_file(error):
 
 @app.route("/")
 def startpage():
-    return '<h1>CSF</h1><a href="userpage">Go</a>'
+    return '<h1>CSF</h1><a href="user">Go</a>',200
 
-@app.route("/userpage")
+@app.route("/user")
+def user():
+    return Response("",302,{"location":"/user/filter"})
+
+@app.route("/user/filter")
 def user_page():
     user =backend.User(1)
     return Response(render_template(
@@ -27,12 +32,19 @@ def user_page():
         create_calendar_path="",
         create_pipe_path=""),200)
 
-@app.route("/save",methods=['POST'])
+@app.route("/user/filter/save",methods=['POST'])
 def save():
+    user=backend.User(1)
+    data=""
+    data=json.dumps(request.json)
+    user.store_filter(data)
+    return "",201
+
+@app.route("/user/filter/load",methods=['GET'])
+def load():
     user=backend.User(1)
     print(request.data)
     return "",201
-
     
 @app.route("/user_config.json")
 def user_nodes():

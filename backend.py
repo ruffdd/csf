@@ -6,12 +6,15 @@ import time
 from ics import Calendar,Event#type: ignore
 from requests import request
 from time import sleep
-from settings import DB_PATH
+import settings
 import filter
 from typing import Any
+from pathlib import Path
+import json
 
 def create_new_db()->None:
-    con:sql.Connection= sql.connect(DB_PATH)
+    os.makedirs(settings.DATA_PATH,exist_ok=True)
+    con:sql.Connection= sql.connect(settings.DB_PATH)
     cur:sql.Cursor = con.cursor()
     cur.execute("CREATE Table IF NOT EXISTS users   (                                           id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE NOT NULL, password TEXT NOT NULL);")
     cur.execute("CREATE Table IF NOT EXISTS sources (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, name TEXT UNIQUE NOT NULL, path TEXT, last_content TEXT);")
@@ -28,15 +31,17 @@ def create_new_db()->None:
 
 class User:
     def __init__(self,id:int)->None:
-        self.con:sql.Connection= sql.connect(DB_PATH)
+        self.con:sql.Connection= sql.connect(settings.DB_PATH)
         cur:sql.Cursor = self.con.cursor()
         self.ID=id
         res=cur.execute("SELECT name FROM users WHERE id = ?",(id,))
         self.NAME = res.fetchone()[0]
+        self.store_path=settings.DATA_PATH/'user-data'/self.NAME
+        os.makedirs(self.store_path,exist_ok=True)
     
     @staticmethod
     def create_user(name:str,password:str)->None:
-        con:sql.Connection= sql.connect(DB_PATH)
+        con:sql.Connection= sql.connect(settings.DB_PATH)
         cur:sql.Cursor = con.cursor()
         try:
             cur.execute("INSERT INTO users (name,password) VALUES(?,?)",(name,password))
@@ -46,8 +51,11 @@ class User:
             con.commit()
             con.close()
     
+    def store_filter(self,data:str,filter_name:str='default')->None:
+        open(self.store_path/(filter_name+'.json'),'w').write(data)
+
     def get_nodes(self)->str:
-        pass
+        return ""
     
     def __del__(self)->None:
         self.con.close()
@@ -86,7 +94,7 @@ def single_factory(cursor:sql.Cursor,row:sql.Row)->object:
 class Worker(multiprocessing.Process):
     connection:sql.Connection
     
-    def __init__(self,db_path:str)->None:
+    def __init__(self,db_path:Path)->None:
         super().__init__()
         self.DB_PATH=db_path
         
@@ -119,4 +127,4 @@ class Worker(multiprocessing.Process):
         return cursor.fetchall()
 
 create_new_db()
-Worker(DB_PATH).start()
+Worker(settings.DB_PATH).start()

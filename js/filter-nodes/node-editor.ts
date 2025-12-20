@@ -42,9 +42,10 @@ namespace FilterNodes {
           }
         })
       }
-      fetch("/save", {
+      fetch("/user/filter/save", {
         method: 'POST',
-        body: JSON.stringify(output)
+        body: JSON.stringify(output),
+        headers: {'Content-Type':'application/json'}
       });
     }
   }
