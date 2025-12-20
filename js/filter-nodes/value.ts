@@ -7,7 +7,9 @@ namespace FilterNodes{
             this.uiElement=uiElement;
         }
 
-
+        public getValueString():string{
+            return this.uiElement.value;
+        }
     }
 
     export class NodeValueIcalAdress extends NodeValue{

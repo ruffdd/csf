@@ -1,8 +1,10 @@
 
+let NodeEditor:FilterNodes.NodeEditor|undefined;
 function builder(event: Event) {
     document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", submit_form, false);
     });
+    NodeEditor=new FilterNodes.NodeEditor();
 }
 
 function submit_form(event: Event) {

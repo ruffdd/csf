@@ -21,11 +21,18 @@ def startpage():
 @app.route("/userpage")
 def user_page():
     user =backend.User(1)
-    return render_template(
+    return Response(render_template(
         'node-editor.html',
         username=user.NAME,
         create_calendar_path="",
-        create_pipe_path="")
+        create_pipe_path=""),200)
+
+@app.route("/save",methods=['POST'])
+def save():
+    user=backend.User(1)
+    print(request.data)
+    return "",201
+
     
 @app.route("/user_config.json")
 def user_nodes():
@@ -41,6 +48,6 @@ def get_form_data(request,names)->list:
             raise KeyError('key "'+name+'" was not found in form data')
     return output
 
-def arg_or_fail(request:Flask.request_class,name:str):
-    pass
+# def arg_or_fail(request:Flask.request_class,name:str):
+#     pass
     

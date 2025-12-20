@@ -14,7 +14,7 @@ namespace FilterNodes {
 		protected state = State.FLOATING;
 		protected startMouse: [number, number];
 		protected startPosition:[number,number];
-		protected values: NodeValue[]=[];
+		public values: NodeValue[]=[];
 
 		constructor(parent: HTMLElement, name: string, startState: string) {
 			if (this.constructor === Node) {
@@ -43,7 +43,7 @@ namespace FilterNodes {
 		}
 
 		protected addValue(value:NodeValue){
-			this.values.push();
+			this.values.push(value);
 			this.contentDiv.append(value.uiElement);
 		}
 
