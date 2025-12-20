@@ -7,7 +7,7 @@ namespace FilterNodes {
 	};
 
 
-	export class Node {
+	export abstract class Node {
 		protected htmlElement: HTMLDivElement;
 		protected titleElement: HTMLDivElement;
 		protected contentDiv: HTMLDivElement;
@@ -15,8 +15,10 @@ namespace FilterNodes {
 		protected startMouse: [number, number];
 		protected startPosition:[number,number];
 		public values: NodeValue[]=[];
+		public readonly type:string;
 
-		constructor(parent: HTMLElement, name: string, startState: string) {
+		constructor(parent: HTMLElement, name: string, startState: string,type:string) {
+			this.type=type;
 			if (this.constructor === Node) {
 				throw new Error("Cannot instantiate abstract class Node");
 			}

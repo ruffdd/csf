@@ -37,10 +37,11 @@ namespace FilterNodes {
 
     public save() {
       let output = {
-        nodes: this.nodes.map((v) => {
+        nodes: this.nodes.map((v:Node) => {
           return {
             values: v.values.map(v => { return v.getValueString(); }),
-            position: v.getPositon()
+            position: v.getPositon(),
+            type:v.type
           }
         })
       }
@@ -55,10 +56,36 @@ namespace FilterNodes {
       fetch("/user/filter/load", {
 
       }).then((response: Response) => {
-        response.json().then(value => { console.log(value); });
+        response.json().then(value => { 
+          value['nodes'].forEach((node:any) => {
+            let newNode=this.addNode(node['type']);
+            newNode.setPosition(node['position']);
+            let values:string[]= node['values'];
+            for (let i = 0; i < values.length; i++) {
+              newNode.values[i].set(values[i]);
+            }
+          });
+        });
       }).catch((response: Response) => {
         console.error(response);
       })
+    }
+
+    public addNode(type: String): FilterNodes.Node {
+      let newNode: Node | undefined
+      switch (type) {
+        case ExampleNode.name:
+          newNode = new ExampleNode(this.HTMLNodeCanvas);
+          break;
+        case SubscribeNode.name:
+          newNode = new SubscribeNode(this.HTMLNodeCanvas);
+          break;
+        default:
+          throw new TypeError(`${type} is not a known Node type`);
+          break;
+      }
+      this.nodes.push(newNode);
+      return newNode;
     }
   }
 
