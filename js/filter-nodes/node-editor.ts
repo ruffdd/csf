@@ -31,6 +31,7 @@ namespace FilterNodes {
         currentElement.addEventListener('click', e => listAdd(this.nodes, new FilterNodes.SubscribeNode(this.HTMLNodeCanvas)));
         this.HTMLNodeMenu.appendChild(currentElement);
       }
+      this.load();
     }
 
 
@@ -38,15 +39,26 @@ namespace FilterNodes {
       let output = {
         nodes: this.nodes.map((v) => {
           return {
-            values: v.values.map(v => { return v.getValueString(); })
+            values: v.values.map(v => { return v.getValueString(); }),
+            position: v.getPositon()
           }
         })
       }
       fetch("/user/filter/save", {
         method: 'POST',
         body: JSON.stringify(output),
-        headers: {'Content-Type':'application/json'}
+        headers: { 'Content-Type': 'application/json' }
       });
+    }
+
+    public load() {
+      fetch("/user/filter/load", {
+
+      }).then((response: Response) => {
+        response.json().then(value => { console.log(value); });
+      }).catch((response: Response) => {
+        console.error(response);
+      })
     }
   }
 

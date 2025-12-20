@@ -43,8 +43,7 @@ def save():
 @app.route("/user/filter/load",methods=['GET'])
 def load():
     user=backend.User(1)
-    print(request.data)
-    return "",201
+    return Response(json.dumps(user.load_filter()),200,headers={'Content-Type': 'application/json'})
     
 @app.route("/user_config.json")
 def user_nodes():
