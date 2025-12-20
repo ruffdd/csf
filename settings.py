@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
 
-DB_PATH='main.db'
-CACHE_PATH=os.path.abspath('.config')
+DATA_PATH=Path('data')
+DB_PATH=DATA_PATH/'main.db'
+CACHE_PATH=os.path.abspath('.cache')
