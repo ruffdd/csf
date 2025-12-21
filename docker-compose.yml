@@ -1,0 +1,7 @@
+#compose file for testing purposes
+services:
+  frontend:
+    build:
+      context: docker/frontend
+    ports:
+      - "127.0.0.1:80:80`"
