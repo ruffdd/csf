@@ -2,8 +2,10 @@ from flask import Flask,request,render_template,Response,url_for,logging,jsonify
 from werkzeug.exceptions import BadRequestKeyError
 import backend
 import json
+import settings
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder=settings.TEMPLATE_PATH,static_folder=settings.STATIC_PATH)
+
 
 @app.errorhandler(404)
 def missing_file(error):
@@ -45,10 +47,6 @@ def load():
     user=backend.User(1)
     return Response(json.dumps(user.load_filter()),200,headers={'Content-Type': 'application/json'})
     
-@app.route("/user_config.json")
-def user_nodes():
-    user = backend.User(1)
-    return user.get_nodes()
 
 def get_form_data(request,names)->list:
     output=list()

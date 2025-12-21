@@ -1,13 +1,8 @@
-import requests# type: ignore
 import sqlite3 as sql
 import os
-import multiprocessing
-import time
-from ics import Calendar,Event#type: ignore
 from requests import request
 from time import sleep
 import settings
-import filter
 from typing import Any
 from pathlib import Path
 import json
@@ -56,9 +51,6 @@ class User:
 
     def load_filter(self,filter_name:str='default'):
         return json.loads(open(self.store_path/(filter_name+'.json'),'r').read())
-
-    def get_nodes(self)->str:
-        return ""
     
     def __del__(self)->None:
         self.con.close()
@@ -94,40 +86,4 @@ def single_factory(cursor:sql.Cursor,row:sql.Row)->object:
     return row[0]
 
 
-class Worker(multiprocessing.Process):
-    connection:sql.Connection
-    
-    def __init__(self,db_path:Path)->None:
-        super().__init__()
-        self.DB_PATH=db_path
-        
-    def run(self)->None:
-        self.connection:sql.Connection = sql.connect(self.DB_PATH)
-        # while(True):
-        #     for user_id in self.user_id_getAll():
-        #         user = User(user_id)
-        #         for source in user.source_get_all():
-        #             ics=user.source_get_content(source['name'])
-        #             for pipe in user.pipes_get_all_by_source(source['id']):
-        #                 if pipe.get('source_id',None)==None:
-        #                     print("pipe {} does not have a sink".format(pipe['name']))
-        #                     continue
-        #                 target=""
-        #                 for calendar in Calendar.parse_multiple(ics):
-        #                     current_target=Calendar()
-        #                     for event in calendar.events:
-        #                         if filter.event(event):
-        #                             current_target.events.add(event)
-        #                     target+=(current_target.serialize())
-        #                 user.sink_set_content(pipe['sink_id'],target)
-        #     sleep(20)
-            
-        
-    def user_id_getAll(self)->list[int]:
-        cursor:sql.Cursor=self.connection.cursor()
-        cursor.execute("SELECT id FROM users")
-        cursor.row_factory=single_factory
-        return cursor.fetchall()
-
 create_new_db()
-Worker(settings.DB_PATH).start()
