@@ -1,11 +1,14 @@
-*.db
-.vscode
+# run data
 data/
+
+#editor
+.vscode
+.nvim.lua
 
 # python
 .venv
 __pycache__
 .mypy_cache
 
+#build files
 static/*.js
-cache
