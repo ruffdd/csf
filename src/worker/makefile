@@ -1,4 +1,4 @@
-CXXFLAGS:= -I nlohmann-json/include
+CXXFLAGS:= -I nlohmann-json -g
 CXX=g++
 CC=g++
 
