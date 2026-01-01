@@ -1,25 +1,24 @@
-#include <string>
-#include <stdexcept>
-class basic_node
+#include "nodes.hpp"
+#include <iostream>
+
+basic_node::basic_node(nlohmann::json json_data)
 {
-
-public:
-    static basic_node instantiate_node(std::string type);
-};
-
-class SubscribeNode : public basic_node
-{
-public:
-    SubscribeNode(){
-
+    json_data["id"].get_to(id);
+    json_data["type"].get_to(type);
+    if (used_ids.contains(id))
+    {
+        throw std::runtime_error(std::format("A node with id {} already exists", id));
     }
-};
+}
 
-basic_node basic_node::instantiate_node(std::string type)
+std::set<uint32_t> basic_node::used_ids = std::set<uint32_t>();
+
+basic_node basic_node::instantiate_node(nlohmann::json json_data)
 {
+    std::string type = json_data["type"];
     if (type == "SubscribeNode")
     {
-        return SubscribeNode();
+        return SubscribeNode(json_data);
     }
     else
     {
