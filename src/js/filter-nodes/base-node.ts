@@ -14,10 +14,13 @@ namespace FilterNodes {
 		protected state = State.FLOATING;
 		protected startMouse: [number, number];
 		protected startPosition:[number,number];
-		public values: NodeValue[]=[];
+		public values: Map<string,NodeValue>=new Map<string,NodeValue>;
 		public readonly type:string;
+		public readonly id:number;
+		private static last_id:number=1;
 
-		constructor(parent: HTMLElement, name: string, startState: string,type:string) {
+		constructor(parent: HTMLElement, name: string, startState: string,type:string,id:number=Node.last_id++) {
+			this.id=id;
 			this.type=type;
 			if (this.constructor === Node) {
 				throw new Error("Cannot instantiate abstract class Node");
@@ -44,8 +47,8 @@ namespace FilterNodes {
 			this.startPosition=this.getPositon();
 		}
 
-		protected addValue(value:NodeValue){
-			this.values.push(value);
+		public addValue(name:string, value:NodeValue){
+			this.values.set(name,value);
 			this.contentDiv.append(value.uiElement);
 		}
 
