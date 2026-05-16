@@ -159,3 +159,122 @@ A Worker may execute any or all Stream Nodes like a Batch Node.
 
 ## Equality
 Two components are *exactly equal* if They are of the same type and all explicit and unset attributes have the same values
+
+## Node Definition
+A Node has always:
+ - ID: identifies the isntance of the node inside a filter graph.
+ - TypeID: identifies the exact sub type of the node. The super Type (input,output,filter) is not explicitly stated
+ - Name: A User given name to the Node. Might be completly discarded by the worker.
+Dpending on Type ha node may have one or multile input and outputs. These can be either a calendar stack or single Value
+ - Parameters: One or multiple Parameters that are defined by the user, per node Instance.
+
+A worker must provide an ability definition defining which nodes are supported
+```json
+{
+    //meta information about the worker
+    "meta":{
+        /** identifies the worker. 
+        It might be or contain a semantiv versioning. 
+        If set ist must be used to identify if the FG is compatible
+        with the worker **/
+        "workerID" : "",
+        /** Userfacing name of the worker. 
+            Should not be used by any processing **/
+        "name" : "",
+        /** Userfacing Description of the worker.
+         Should not be used by an processing **/
+        "description" : ""
+    },
+    "nodes":[
+        {
+            "typeID": "",
+            "parameters":{
+                "para1":{
+                    /** Userfacing name.
+                     May be omited and the key of the paramter
+                     must be used instead **/
+                    "name":"",
+                    /** Type of the parameter **/
+                    "type":"",
+                    /** Optional default value.
+                    Must be able to be converted into the type 
+                    May not be a string **/
+                    "defaultValue":"",
+                    /** Optionak aditional description.
+                    May use html **/
+                    "description":""
+                }
+            },
+            "Inputs":{
+                "Input1":{
+                    /** The IO type. Either components or a single Type **/
+                    "type":"",
+                    /** User facing name of the input.
+                    May be omitted if only one input
+                    is present.
+                    Must not be used to identify the input **/
+                    "name": "",
+                    /** User facing description of the input.
+                    May be omitted if only one input
+                    is present. **/
+                    "description":""
+                }
+            },
+            "Outputs":{
+                "Output1":{
+                    /** The IO type. Either components or a single Type **/
+                    "type":"",
+                    /** User facing name of the output.
+                    May be omitted if only one output
+                    is present.
+                    Must not be used to identify the output **/
+                    "name": "",
+                    /** User facing description of the output.
+                    May be omitted if only one output
+                    is present. **/
+                    "description":""
+                }
+            }
+        }
+    ]
+}
+```
+See also [Types](types)
+
+```mermaid
+classDiagram
+    class Node<<Interface>>{
+        -id:uint
+        +getid():uint
+    }
+```
+
+```mermaid
+classDiagram
+    class BatchNode<<Interface>>{
+
+    }
+    class StreamNode<<Interface>>{
+
+    }
+    class FilterNode <<Interface>>{
+
+    }
+    class InputNode<<Interface>>{
+
+    }
+    class OutputNode<<Interface>>{
+
+    }
+    class Node<<Interface>>{
+
+    }
+    BatchNode --|> FilterNode
+    StreamNode --|> FilterNode
+    InputNode "*" --> "1..*" FilterNode  :Next
+    InputNode "*" --> "*" InputNode  :Next
+    FilterNode "1..*" --> "*" OutputNode  :Next
+    FilterNode --|> Node
+    InputNode --|> Node
+    OutputNode --|> Node
+```
