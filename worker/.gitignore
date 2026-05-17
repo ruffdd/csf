@@ -1,1 +1,6 @@
+# binaries
 worker
+testing
+
+# build files
+*.o
